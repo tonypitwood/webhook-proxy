@@ -22,14 +22,19 @@ console.log("✅ / root route defined");
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Webhook proxy running on port ${process.env.PORT || 3000}`);
 
+  // 🔍 Log full router stack contents
   if (app._router && app._router.stack) {
-    const routes = app._router.stack.filter(r => r.route);
-    console.log(`🔍 Router stack length: ${routes.length}`);
-    routes.forEach(r => {
-      console.log(`🔔 Route registered: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
+    console.log("🔍 Full router stack:");
+    app._router.stack.forEach((layer, index) => {
+      console.log(`Layer ${index}:`, {
+        name: layer.name,
+        path: layer.route?.path,
+        methods: layer.route?.methods,
+      });
     });
   } else {
-    console.log("⚠️ Route stack not initialized.");
+    console.log("⚠️ app._router.stack is not available.");
   }
+
+  console.log("✅ Your service is live");
 });
-console.log("🧮 Bracket sanity check: file loaded successfully");
