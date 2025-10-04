@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
   res.send("Webhook proxy is live");
 });
 
-/  // 🔍 Log full router stack contents
+  // 🔍 Log full router stack contents
 if (app._router && app._router.stack) {
   console.log("🔍 Full router stack:");
   app._router.stack.forEach((layer, index) => {
