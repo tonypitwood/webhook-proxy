@@ -18,11 +18,7 @@ app.get("/", (req, res) => {
 });
 console.log("✅ / root route defined");
 
-// ✅ Log routes inside listen callback
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Webhook proxy running on port ${process.env.PORT || 3000}`);
-
-  // 🔍 Log full router stack contents
+/  // 🔍 Log full router stack contents
   if (app._router && app._router.stack) {
     console.log("🔍 Full router stack:");
     app._router.stack.forEach((layer, index) => {
@@ -36,5 +32,9 @@ app.listen(process.env.PORT || 3000, () => {
     console.log("⚠️ app._router.stack is not available.");
   }
 
-  console.log("✅ Your service is live");
+ / ✅ Log routes inside listen callback
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Webhook proxy running on port ${process.env.PORT || 3000}`);
+
+ console.log("✅ Your service is live");
 });
