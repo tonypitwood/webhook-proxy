@@ -4,19 +4,19 @@ app.use(express.json());
 
 // 🔹 Define routes inline
 app.post("/upload-test", async (req, res) => {
+  console.log("✅ /upload-test route defined");
   res.status(200).json({ status: "upload-test received" });
 });
-console.log("✅ /upload-test route defined");
 
 app.post("/fallback", (req, res) => {
+  console.log("✅ /fallback route defined");
   res.status(200).json({ status: "fallback received" });
 });
-console.log("✅ /fallback route defined");
 
 app.get("/", (req, res) => {
+  console.log("✅ / root route defined");
   res.send("Webhook proxy is live");
 });
-console.log("✅ / root route defined");
 
 /  // 🔍 Log full router stack contents
   if (app._router && app._router.stack) {
