@@ -33,3 +33,4 @@ app.listen(process.env.PORT || 3000, () => {
     console.log("⚠️ Route stack not initialized.");
   }
 });
+console.log("🧮 Bracket sanity check: file loaded successfully");
