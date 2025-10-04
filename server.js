@@ -29,38 +29,30 @@ app.post("/upload-test", async (req, res) => {
   const type = classify(payload);
   const destination = routes[type];
 
-  const markdown = formatMarkdownSummary({
-  classification: type,
-  routedTo: destination,
-  downstreamStatus: response.status
-});
-
-res.status(200).json({
-  status: "success",
-  classification: type,
-  routedTo: destination,
-  downstreamStatus: response.status,
-  markdownSummary: markdown
-});
-
-try {
+  try {
     const response = await axios.post(destination, payload, {
       headers: { "Content-Type": "application/json" }
     });
 
-    console.log(`[${type.toUpperCase()}] Routed to ${destination}`);
-    res.status(200).json({
-      status: "success",
+    const markdown = formatMarkdownSummary({
       classification: type,
       routedTo: destination,
       downstreamStatus: response.status
     });
-  } catch (err) {
-    console.error(`Routing failed for ${type}:`, err.message);
-    res.status(500).json({
-      status: "error",
+
+    res.status(200).json({
+      status: "success",
       classification: type,
       routedTo: destination,
+      downstreamStatus: response.status,
+      markdownSummary: markdown
+    });
+  } catch (err) {
+    console.error("❌ Downstream error:", err.message);
+
+    res.status(500).json({
+      status: "error",
+      message: "Failed to route payload",
       error: err.message
     });
   }
