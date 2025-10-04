@@ -18,6 +18,20 @@ app.get("/", (req, res) => {
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Webhook proxy running on port ${process.env.PORT || 3000}`);
 
+  if (app._router) {
+    console.log(`🔍 Router stack length: ${app._router.stack.length}`);
+    console.log(`🔍 Router keys: ${Object.keys(app._router)}`);
+    
+    app._router.stack
+      .filter(r => r.route)
+      .forEach(r => {
+        console.log(`🔔 Route registered: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
+      });
+  } else {
+    console.log("⚠️ app._router is undefined.");
+  }
+});
+
   if (app._router && app._router.stack) {
     app._router.stack
       .filter(r => r.route)
