@@ -6,13 +6,17 @@ app.use(express.json());
 app.post("/upload-test", async (req, res) => {
   res.status(200).json({ status: "upload-test received" });
 });
+console.log("✅ /upload-test route defined");
 
 app.post("/fallback", (req, res) => {
   res.status(200).json({ status: "fallback received" });
 });
+console.log("✅ /fallback route defined");
 
 app.get("/", (req, res) => {
   res.send("Webhook proxy is live");
+});
+console.log("✅ / root route defined");
 });
 
 // ✅ Log routes inside listen callback
