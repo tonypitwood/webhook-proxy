@@ -59,6 +59,14 @@ app.post("/upload-test", async (req, res) => {
   }
 });
 
-app.listen(3000, () => {
-  console.log("Webhook proxy running on port 3000");
+app._router.stack
+  .filter(r => r.route)
+  .forEach(r => {
+    console.log(`📡 Route registered: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
+  });
+  
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, () => {
+  console.log(`Webhook proxy running on port ${PORT}`);
 });
