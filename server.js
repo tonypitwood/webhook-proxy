@@ -17,7 +17,6 @@ app.get("/", (req, res) => {
   res.send("Webhook proxy is live");
 });
 console.log("✅ / root route defined");
-});
 
 // ✅ Log routes inside listen callback
 app.listen(process.env.PORT || 3000, () => {
