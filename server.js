@@ -1,7 +1,7 @@
 const express = require("express");
 const app = express();
 
-// Middleware (optional, add if needed)
+// Optional middleware
 app.use(express.json());
 
 // Define routes inline
