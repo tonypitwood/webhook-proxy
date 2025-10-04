@@ -7,6 +7,7 @@ app.use(express.json());
 // Define routes inline
 app.post("/upload-test", async (req, res) => {
   console.log("✅ /upload-test route hit");
+  console.log("📦 Payload received:", req.body);
   res.status(200).json({ status: "upload-test received" });
 });
 
@@ -38,4 +39,18 @@ if (app._router && app._router.stack) {
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Webhook proxy running on port ${PORT}`);
+
+  // 🔍 Log full router stack contents inside listen callback
+  if (app._router && app._router.stack) {
+    console.log("🔍 Full router stack:");
+    app._router.stack.forEach((layer, index) => {
+      console.log(`Layer ${index}:`, {
+        name: layer.name,
+        path: layer.route?.path,
+        methods: layer.route?.methods,
+      });
+    });
+  } else {
+    console.log("⚠️ app._router.stack is not available.");
+  }
 });
