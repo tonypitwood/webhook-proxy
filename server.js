@@ -1,79 +1,35 @@
 require("dotenv").config();
-
 const express = require("express");
 const axios = require("axios");
+
 const app = express();
 app.use(express.json());
 
-function classify(payload) {
-  const msg = (payload.message || "").toLowerCase();
-  if (msg.includes("alert")) return "alert";
-  if (msg.includes("error") || msg.includes("exception")) return "error";
-  if (payload.email || msg.includes("lead")) return "lead";
-  return "unknown";
-}
+// 🔹 Define classify(), routes, formatMarkdownSummary()
 
-const routes = {
-  alert: "https://httpbin.org/post",
-  lead: "https://httpbin.org/post",
-  error: "https://httpbin.org/post",
-  unknown: "https://fallback-endpoint.example.com"
-};
-
-function formatMarkdownSummary({ classification, routedTo, downstreamStatus }) {
-  return `**Classification:** ${classification}\n**Routed To:** ${routedTo}\n**Downstream Status:** ${downstreamStatus}`;
-}
-
-routes.unknown = "http://localhost:3000/fallback";
-
-app.post("/fallback", (req, res) => {
-  console.log("📥 Fallback endpoint received:", req.body);
-  res.status(200).json({ status: "received", message: "Fallback accepted" });
-});
-
+// 🔹 Define /upload-test
 app.post("/upload-test", async (req, res) => {
-  const payload = req.body;
-  const type = classify(payload);
-  const destination = routes[type];
-
-  try {
-    console.log(`🔍 Routing '${type}' payload to: ${destination}`);
-	const response = await axios.post(destination, payload, {
-      headers: { "Content-Type": "application/json" }
-    });
-
-    const markdown = formatMarkdownSummary({
-      classification: type,
-      routedTo: destination,
-      downstreamStatus: response.status
-    });
-
-    res.status(200).json({
-      status: "success",
-      classification: type,
-      routedTo: destination,
-      downstreamStatus: response.status,
-      markdownSummary: markdown
-    });
-  } catch (err) {
-    console.error("❌ Downstream error:", err.message);
-
-    res.status(500).json({
-      status: "error",
-      message: "Failed to route payload",
-      error: err.message
-    });
-  }
+  // your routing logic
 });
 
+// 🔹 Define /fallback
+app.post("/fallback", (req, res) => {
+  // fallback handler
+});
+
+// 🔹 Define root route
+app.get("/", (req, res) => {
+  res.send("Webhook proxy is live");
+});
+
+// ✅ Route logger — must come *after* all routes
 app._router.stack
   .filter(r => r.route)
   .forEach(r => {
-    console.log(`📡 Route registered: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
+    console.log(`🔔 Route registered: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
   });
-  
-const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, () => {
-  console.log(`Webhook proxy running on port ${PORT}`);
+// ✅ Start server
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Webhook proxy running on port ${process.env.PORT || 3000}`);
 });
