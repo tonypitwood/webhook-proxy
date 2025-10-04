@@ -24,6 +24,13 @@ function formatMarkdownSummary({ classification, routedTo, downstreamStatus }) {
   return `**Classification:** ${classification}\n**Routed To:** ${routedTo}\n**Downstream Status:** ${downstreamStatus}`;
 }
 
+routes.unknown = "http://localhost:3000/fallback";
+
+app.post("/fallback", (req, res) => {
+  console.log("📥 Fallback endpoint received:", req.body);
+  res.status(200).json({ status: "received", message: "Fallback accepted" });
+});
+
 app.post("/upload-test", async (req, res) => {
   const payload = req.body;
   const type = classify(payload);
