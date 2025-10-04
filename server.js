@@ -22,12 +22,11 @@ app.get("/", (req, res) => {
 if (app._router && app._router.stack) {
   console.log("🔍 Full router stack:");
   app._router.stack.forEach((layer, index) => {
-    console.log(`Layer ${index}:`, {
-      name: layer.name,
-      path: layer.route?.path,
-      methods: layer.route?.methods,
-    });
-  });
+console.log(`Layer ${index}:`, {
+  name: layer.name,
+  path: layer.route?.path,
+  methods: layer.route?.methods,
+});  });
 } else {
   console.log("⚠️ app._router.stack is not available.");
 }
