@@ -23,11 +23,17 @@ app.get("/", (req, res) => {
 });
 
 // ✅ Route logger — must come *after* all routes
-app._router.stack
-  .filter(r => r.route)
-  .forEach(r => {
-    console.log(`🔔 Route registered: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
-  });
+setTimeout(() => {
+  if (app._router && app._router.stack) {
+    app._router.stack
+      .filter(r => r.route)
+      .forEach(r => {
+        console.log(`🔔 Route registered: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
+      });
+  } else {
+    console.log("⚠️ Route stack not initialized yet.");
+  }
+}, 100); // slight delay to ensure stack is populated
 
 // ✅ Start server
 app.listen(process.env.PORT || 3000, () => {
