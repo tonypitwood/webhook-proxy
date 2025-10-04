@@ -40,17 +40,19 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🚀 Webhook proxy running on port ${PORT}`);
 
-  // 🔍 Log full router stack contents inside listen callback
-  if (app._router && app._router.stack) {
-    console.log("🔍 Full router stack:");
-    app._router.stack.forEach((layer, index) => {
-      console.log(`Layer ${index}:`, {
-        name: layer.name,
-        path: layer.route?.path,
-        methods: layer.route?.methods,
+  // Delay router stack inspection slightly
+  setTimeout(() => {
+    if (app._router && app._router.stack) {
+      console.log("🔍 Full router stack:");
+      app._router.stack.forEach((layer, index) => {
+        console.log(`Layer ${index}:`, {
+          name: layer.name,
+          path: layer.route?.path,
+          methods: layer.route?.methods,
+        });
       });
-    });
-  } else {
-    console.log("⚠️ app._router.stack is not available.");
-  }
+    } else {
+      console.log("⚠️ app._router.stack is not available.");
+    }
+  }, 100); // 100ms delay
 });
