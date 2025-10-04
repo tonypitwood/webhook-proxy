@@ -12,10 +12,10 @@ function classify(payload) {
 }
 
 const routes = {
-  alert: "https://yourdomain.com/alert-handler",
-  lead: "https://yourdomain.com/lead-capture",
-  error: "https://yourdomain.com/error-logger",
-  unknown: "https://yourdomain.com/fallback"
+  alert: "https://httpbin.org/post",
+  lead: "https://httpbin.org/post",
+  error: "https://httpbin.org/post",
+  unknown: "https://httpbin.org/post"
 };
 
 app.post("/upload-test", async (req, res) => {
