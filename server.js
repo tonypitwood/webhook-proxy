@@ -30,7 +30,8 @@ app.post("/upload-test", async (req, res) => {
   const destination = routes[type];
 
   try {
-    const response = await axios.post(destination, payload, {
+    console.log(`🔍 Routing '${type}' payload to: ${destination}`);
+	const response = await axios.post(destination, payload, {
       headers: { "Content-Type": "application/json" }
     });
 
