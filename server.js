@@ -22,8 +22,12 @@ app.get("/", (req, res) => {
   res.send("Webhook proxy is live");
 });
 
-// ✅ Route logger — must come *after* all routes
-setTimeout(() => {
+
+// ✅ Start server
+app.listen(process.env.PORT || 3000, () => {
+  console.log(`Webhook proxy running on port ${process.env.PORT || 3000}`);
+
+  // ✅ Route logger inside listen callback
   if (app._router && app._router.stack) {
     app._router.stack
       .filter(r => r.route)
@@ -31,11 +35,6 @@ setTimeout(() => {
         console.log(`🔔 Route registered: ${Object.keys(r.route.methods)[0].toUpperCase()} ${r.route.path}`);
       });
   } else {
-    console.log("⚠️ Route stack not initialized yet.");
+    console.log("⚠️ Route stack not initialized.");
   }
-}, 100); // slight delay to ensure stack is populated
-
-// ✅ Start server
-app.listen(process.env.PORT || 3000, () => {
-  console.log(`Webhook proxy running on port ${process.env.PORT || 3000}`);
 });
