@@ -7,27 +7,17 @@ app.use(express.json());
 
 // 🔹 Define classify(), routes, formatMarkdownSummary()
 
-// 🔹 Define /upload-test
-app.post("/upload-test", async (req, res) => {
-  // your routing logic
-});
-
-// 🔹 Define /fallback
-app.post("/fallback", (req, res) => {
-  // fallback handler
-});
-
-// 🔹 Define root route
+// 🔹 Define all routes FIRST
+app.post("/upload-test", async (req, res) => { /* ... */ });
+app.post("/fallback", (req, res) => { /* ... */ });
 app.get("/", (req, res) => {
   res.send("Webhook proxy is live");
 });
 
-
-// ✅ Start server
+// ✅ THEN start the server and log routes
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Webhook proxy running on port ${process.env.PORT || 3000}`);
 
-  // ✅ Route logger inside listen callback
   if (app._router && app._router.stack) {
     app._router.stack
       .filter(r => r.route)
